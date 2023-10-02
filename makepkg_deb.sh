@@ -3,11 +3,10 @@ set -e
 
 VERSION="0.1"
 REV="0"
-ARCH=uname -m
+ARCH=$(dpkg --print-architecture)
 
 # This script is used to build a Debian package from source
-git clone https://github.com/RLado/Oink.git
-git checkout v$VERSION.$REV
+git clone --depth 1 --branch v$VERSION.$REV https://github.com/RLado/Oink.git
 
 # Build
 cd Oink
@@ -26,22 +25,22 @@ Description: A lightweight DDNS client for Porkbun
 " > control
 
 # Create a temporary directory
-mkdir -p oink_$VERSION-$REV_$ARCH
-mkdir -p oink_$VERSION-$REV_$ARCH/DEBIAN
-mkdir -p oink_$VERSION-$REV_$ARCH/usr/bin
-mkdir -p oink_$VERSION-$REV_$ARCH/etc/oink_ddns/
-mkdir -p oink_$VERSION-$REV_$ARCH/lib/systemd/system/
+mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"
+mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN
+mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/usr/bin
+mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/etc/oink_ddns/
+mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/lib/systemd/system/
 
 # Copy files
-cp Oink/oink oink_$VERSION-$REV_$ARCH/usr/bin/
-cp Oink/config/config.json oink_$VERSION-$REV_$ARCH/etc/oink_ddns/
-cp Oink/config/oink_ddns.service oink_$VERSION-$REV_$ARCH/lib/systemd/system/
-cp control  oink_$VERSION-$REV_$ARCH/DEBIAN/
+cp Oink/oink oink_"$VERSION"-"$REV"_"$ARCH"/usr/bin/
+cp Oink/config/config.json oink_"$VERSION"-"$REV"_"$ARCH"/etc/oink_ddns/
+cp Oink/config/oink_ddns.service oink_"$VERSION"-"$REV"_"$ARCH"/lib/systemd/system/
+cp control  oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN/
 
 # Create the package
-dpkg-deb --build --root-owner-group oink_$VERSION-$REV_$ARCH
+dpkg-deb --build --root-owner-group oink_"$VERSION"-"$REV"_"$ARCH"
 
 # Clean up
-rm -rf oink_$VERSION-$REV_$ARCH
+rm -rf oink_"$VERSION"-"$REV"_"$ARCH"
 rm -rf Oink
 rm control
