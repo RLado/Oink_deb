@@ -45,4 +45,3 @@ dpkg-deb --build --root-owner-group oink_"$VERSION"-"$REV"_"$ARCH"
 # Clean up
 rm -rf oink_"$VERSION"-"$REV"_"$ARCH"
 rm -rf Oink
-rm control
