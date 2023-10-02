@@ -2,7 +2,7 @@
 set -e
 
 VERSION="0.1"
-REV="0"
+REV="1"
 ARCH=$(dpkg --print-architecture)
 
 # This script is used to build a Debian package from source
@@ -13,16 +13,6 @@ cd Oink
 make build
 
 cd ..
-
-# Create the control file
-echo "
-Package: oink
-Version: $VERSION.$REV
-Architecture: $ARCH
-Maintainer: Ricard Lado <ricard@lado.one>
-Description: A lightweight DDNS client for Porkbun
-    Oink! is an unofficial DDNS client for porkbun.com built in Go
-" > control
 
 # Create a temporary directory
 mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"
@@ -35,7 +25,19 @@ mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/lib/systemd/system/
 cp Oink/oink oink_"$VERSION"-"$REV"_"$ARCH"/usr/bin/
 cp Oink/config/config.json oink_"$VERSION"-"$REV"_"$ARCH"/etc/oink_ddns/
 cp Oink/config/oink_ddns.service oink_"$VERSION"-"$REV"_"$ARCH"/lib/systemd/system/
-cp control  oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN/
+
+# Create the control file
+echo "
+Package: oink
+Version: $VERSION.$REV
+Architecture: $ARCH
+Maintainer: Ricard Lado <ricard@lado.one>
+Description: A lightweight DDNS client for Porkbun
+    Oink! is an unofficial DDNS client for porkbun.com built in Go
+" > oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN/control
+
+# Create conffiles
+echo "/etc/oink_ddns/config.json" > oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN/conffiles
 
 # Create the package
 dpkg-deb --build --root-owner-group oink_"$VERSION"-"$REV"_"$ARCH"
