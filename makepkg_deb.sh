@@ -2,29 +2,20 @@
 set -e
 
 VERSION="0.1"
-REV="1"
+REV="2"
 ARCH=$(dpkg --print-architecture)
 
 # This script is used to build a Debian package from source
 git clone --depth 1 --branch v$VERSION.$REV https://github.com/RLado/Oink.git
 
-# Build
-cd Oink
-make build
-
-cd ..
-
 # Create a temporary directory
 mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"
 mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN
-mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/usr/bin
-mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/etc/oink_ddns/
-mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/lib/systemd/system/
 
-# Copy files
-cp Oink/oink oink_"$VERSION"-"$REV"_"$ARCH"/usr/bin/
-cp Oink/config/config.json oink_"$VERSION"-"$REV"_"$ARCH"/etc/oink_ddns/
-cp Oink/config/oink_ddns.service oink_"$VERSION"-"$REV"_"$ARCH"/lib/systemd/system/
+# Build and copy files
+cd Oink
+make build
+make install DESTDIR=../oink_"$VERSION"-"$REV"_"$ARCH"
 
 # Create the control file
 echo "
