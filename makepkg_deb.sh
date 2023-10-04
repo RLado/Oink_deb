@@ -16,6 +16,7 @@ mkdir -p oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN
 cd Oink
 make build
 make install DESTDIR=../oink_"$VERSION"-"$REV"_"$ARCH"
+cd ..
 
 # Create the control file
 echo "
