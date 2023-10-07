@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-VERSION="0.1"
-REV="2"
+VERSION="1.0"
+REV="0"
 ARCH=$(dpkg --print-architecture)
 
 # This script is used to build a Debian package from source
@@ -30,6 +30,13 @@ Description: A lightweight DDNS client for Porkbun
 
 # Create conffiles
 echo "/etc/oink_ddns/config.json" > oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN/conffiles
+
+# Set correct permissions
+chmod 0755 oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN
+chmod 0644 oink_"$VERSION"-"$REV"_"$ARCH"/DEBIAN/*
+chmod 0755 oink_"$VERSION"-"$REV"_"$ARCH"/usr
+chmod 0700 oink_"$VERSION"-"$REV"_"$ARCH"/etc/oink_ddns
+chmod 0600 oink_"$VERSION"-"$REV"_"$ARCH"/etc/oink_ddns/config.json
 
 # Create the package
 dpkg-deb --build --root-owner-group oink_"$VERSION"-"$REV"_"$ARCH"
