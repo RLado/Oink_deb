@@ -2,7 +2,7 @@
 set -e
 
 VERSION="1.3"
-REV="0"
+REV="1"
 ARCH=$(dpkg --print-architecture)
 
 # This script is used to build a Debian package from source
