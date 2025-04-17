@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-VERSION="1.3"
-REV="1"
+VERSION="1.4"
+REV="0"
 ARCH=$(dpkg --print-architecture)
 
 # This script is used to build a Debian package from source
